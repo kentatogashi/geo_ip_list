@@ -7,7 +7,7 @@ class PostHandler {
     public function __construct($post) {
 
 	$post = trim($post['ip_list']);
-	if(function_exists()) 
+
 	if(!strlen($post['ip_list']) > 0) {
 	    throw new Exception('Post data is empty');
 	}
@@ -45,3 +45,4 @@ class PostHandler {
     public function getParams() {
 	return $this->_params;
     }
+}

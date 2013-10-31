@@ -7,7 +7,7 @@
 if($_SERVER["REQUEST_METHOD"] == "POST" && (!empty($_POST['ip_list'])) ) {
     include'config.php';
     include'PostHandler.php';
-    $Post = PostHandler($_POST['ip_list']);
+    $Post = new PostHandler($_POST['ip_list']);
     $data = $Post->getParams();
 }
 ?>

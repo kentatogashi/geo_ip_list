@@ -1,34 +1,87 @@
 <html>
-<head>
-<title>Geo IP List</title>
-</head>
-<body>
-<?php
+    <head>
+	<title>Geo IP List</title>
+	<style>
+	    #wrapper {
+		width:100%;
+		min-height:80%;
+		margin:0;
+	    }
 
-$ip_list = explode("\n",$_POST['ip_list']);
-if($_SERVER["REQUEST_METHOD"] == "POST") {
-    print("Get Parmas!!");
-}
-?>
+	    #header {
+		margin-right:auto;
+		height:50px;
+		width:100%;
+		background:#e5e5e5;
+		position:relative;
+	    }
 
-<form method="post" action="<?php echo $_SERVER["PHP_SELF"];?>" name="params">
+	    #title {
+		margin:0;
+		margin-left:20px;
+		margin-top:10px;
+		padding:0;
+		font-size:28px;
+		float:left;
+	    }
 
-<input type="submit" name="" value="Parse">
-<textarea name="ip_list" style="min-height:300px;"></textarea>
-</form>
-<div id="list">
+	    ul{
+		display:block;
+		height:35px;
+		padding-top:12px;
+	    }
 
-<?php foreach($ip_list as $n => $ip): ?>
-<?php $p = $n + 1; ?>
-<?php
-if(!strstr(geoip_country_name_by_name($ip),'Japan')) {
-    echo "<span style='color:red;'>".$p." ".$ip."->".geoip_country_name_by_name($ip)."</span><br>";
-}else{
-    echo "<span style=''>".$p." ".$ip."->".geoip_country_name_by_name($ip)."</span><br>";
-}
-?>
+	    li {
+		display:inline;
+		list-style:none;
+		float:right;
+		padding-right:10px;
+	    }
 
-<?php endforeach; ?>
-</div>
-</body>
-</html>
+	    #sub_content_left {
+		float:left;
+	    }
+	    #sub_content_right {
+		float:right;
+	    }
+	</style>
+    </head>
+    <body>
+	<?php
+	if(!empty($_POST['ip_list'])) {
+	include'config.php';
+	include'PostHandler.php';
+	$Post = new PostHandler($_POST['ip_list']);
+	$data = $Post->getParams();
+	}
+	?>
+	<div id="wrapper">
+	    <div id="header"> 
+		<p id="title">Geo IP List</p>
+		<ul>
+		    <li><a href="https://github.com/kentatogashi">GitHub</a></li>
+		    <li><a href="#">Readme</a></li>
+		</ul>
+	    </div>
+	    <div id="countent">
+		<div id="sub_content_left">
+		    <p class="headline">Insert IP Address List
+		    <input type="submit" value="Parse" onclick="document.params.submit()">
+		    <input type="reset" value="Reset" onclick="document.params.reset()">
+		    </p>
+		    <form method="post" action="<?php echo $_SERVER["PHP_SELF"];?>" name="params">
+			<textarea name="ip_list" style="width:300px;height:300px;" placeholder="123.456.789.0 or 123.456.789.0:hogehoge@gmail.com"></textarea>
+		    </form>
+		</div>
+		<div id="sub_content_right">
+		    <p class="headline">Display Parsed List Below</p>
+		    <span><?php echo"total:". count($data) ;?></span><br>
+		    <?php foreach($data as $n => $v): $jp_flg = (!strstr($c_name,'Japan')) ? true : false ; ?>
+		    <span style="<?php if($jp_flg) echo 'color:red;';?>">
+			<?php echo $v['mail_address'] . $v['ip_address'] . $v['country_name'] ; ?>
+		    </span><br>
+		    <?php endforeach; ?>
+		</div>
+	    </div>
+	</body>
+    </html>

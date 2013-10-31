@@ -11,14 +11,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && (!empty($_POST['ip_list'])) ) {
     $data = $Post->getParams();
 }
 ?>
+<h2>Geo IP List</h2>
 
 <form method="post" action="<?php echo $_SERVER["PHP_SELF"];?>" name="params">
-
 <input type="submit" name="" value="Parse">
-<textarea name="ip_list" style="min-height:300px;"></textarea>
+<textarea name="ip_list" style="min-height:300px;min-width:300px;"></textarea>
 </form>
 <div id="list">
-
+<span><?php echo"total:". count($data) ;?></span><br>
 <?php foreach($data as $n => $val):
 $mail = $val['mail_address'];
 $ip = $val['ip_address']; 

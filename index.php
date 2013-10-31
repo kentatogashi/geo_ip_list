@@ -1,3 +1,11 @@
+<?php
+include"setting.php";
+if(!empty($_POST['ip_list'])) {
+    include'PostHandler.php';
+    $Post = new PostHandler($_POST['ip_list']);
+    $data = $Post->getParams();
+}
+?>
 <html>
     <head>
 	<title>Geo IP List</title>
@@ -47,14 +55,6 @@
 	</style>
     </head>
     <body>
-	<?php
-	if(!empty($_POST['ip_list'])) {
-	include'config.php';
-	include'PostHandler.php';
-	$Post = new PostHandler($_POST['ip_list']);
-	$data = $Post->getParams();
-	}
-	?>
 	<div id="wrapper">
 	    <div id="header"> 
 		<p id="title">Geo IP List</p>
@@ -75,12 +75,14 @@
 		</div>
 		<div id="sub_content_right">
 		    <p class="headline">Display Parsed List Below</p>
+		    <?php if(isset($data)): ?>
 		    <span><?php echo"total:". count($data) ;?></span><br>
 		    <?php foreach($data as $n => $v): $jp_flg = (!strstr($c_name,'Japan')) ? true : false ; ?>
 		    <span style="<?php if($jp_flg) echo 'color:red;';?>">
 			<?php echo $v['mail_address'] . $v['ip_address'] . $v['country_name'] ; ?>
 		    </span><br>
 		    <?php endforeach; ?>
+                    <?php endif; ?>
 		</div>
 	    </div>
 	</body>

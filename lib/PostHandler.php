@@ -1,49 +1,43 @@
 <?php
-
 class PostHandler {
     private $_post = array();
     private $_params = array();
     
     public function __construct($post) {
-
-	$post = trim($post);
-
-	if(!strlen($post) > 0) {
-	    throw new Exception('Post data is empty');
-	}
-	$this->_params = $this->_parse($post);
-#	var_dump($this->_params);exit;
+	$this->_post = $post;
+	$this->sanitize($this->_post);
+	$this->_params = $this->parse($this->_post);
     }
 
-    private function _parse($post) {
+    private function sanitize() {
+	
+	if(empty($this->_post)) {
+	throw Exception("Input data is empty");
+	}
+	$this->_post = htmlspecialchars($this->_post,ENT_QUOTES,'UTF-8'); 
+	# $this->_post = mysql_real_escape_string($this->_post);
+    }
+
+    private function parse($post) {
 	$rows = explode("\n",$post);
 	$parsed_params = array();
-
 	foreach($rows as $key => $val) {
-#	    var_dump($val);
 	    if(strstr($val,'@')) {
-		
 		$tmp = explode(':',$val);
-#		var_dump($tmp);
 		$parsed_params[$key]['mail_address'] = $tmp[0];
 		$parsed_params[$key]['ip_address'] = $tmp[1];
-		$parsed_params[$key]['country_name'] = $this->_searchCountryName($tmp[1]);
-#	var_dump($parsed_params);
+		$parsed_params[$key]['country_name'] = $this->searchCountryName($tmp[1]);
 	    } else {
 		$parsed_params[$key]['ip_address'] = $val;
-		$parsed_params[$key]['country_name'] = $this->_searchCountryName($val);
+		$parsed_params[$key]['country_name'] = $this->searchCountryName($val);
 	    }
 	}
-	#var_dump($parsed_params);exit;
 	return $parsed_params;
-
     }
 
-    private function _searchCountryName($ip_address) {
+    private function searchCountryName($ip_address) {
 	$country_name = geoip_country_name_by_name($ip_address);
-	
 	if(empty($country_name)) $country_name = null;
-
 	return $country_name;
     }
 

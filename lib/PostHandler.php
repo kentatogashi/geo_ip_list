@@ -6,12 +6,13 @@ class PostHandler {
     
     public function __construct($post) {
 
-	$post = trim($post['ip_list']);
+	$post = trim($post);
 
-	if(!strlen($post['ip_list']) > 0) {
+	if(!strlen($post) > 0) {
 	    throw new Exception('Post data is empty');
 	}
 	$this->_params = $this->_parse($post);
+#	var_dump($this->_params);exit;
     }
 
     private function _parse($post) {
@@ -19,17 +20,21 @@ class PostHandler {
 	$parsed_params = array();
 
 	foreach($rows as $key => $val) {
-	    if(strstr($rows[0],'@')) {
-		$tmp = explode($val,':');
+#	    var_dump($val);
+	    if(strstr($val,'@')) {
+		
+		$tmp = explode(':',$val);
+#		var_dump($tmp);
 		$parsed_params[$key]['mail_address'] = $tmp[0];
 		$parsed_params[$key]['ip_address'] = $tmp[1];
 		$parsed_params[$key]['country_name'] = $this->_searchCountryName($tmp[1]);
+#	var_dump($parsed_params);
 	    } else {
-		//$val is ip address
-		$parsed_params[]['country_name'] = $this->_searchCountryName($val);
+		$parsed_params[$key]['ip_address'] = $val;
+		$parsed_params[$key]['country_name'] = $this->_searchCountryName($val);
 	    }
 	}
-
+	#var_dump($parsed_params);exit;
 	return $parsed_params;
 
     }

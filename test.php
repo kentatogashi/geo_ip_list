@@ -19,16 +19,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && (!empty($_POST['ip_list'])) ) {
 </form>
 <div id="list">
 
-<?php foreach($data as $n => $val): ?>
-<?php $p = $n + 1; $ip = $val[$n]['ip_address']; $c_name = $val[$n]['country_name']; ?>
-<?php
-if(!strstr($c_name,'Japan')) {
-    echo "<span style='color:red;'>".$p." ".$ip."->".$c_name."</span><br>";
-}else{
-    echo "<span style=''>".$p." ".$ip."->".$c_name."</span><br>";
-}
+<?php foreach($data as $n => $val):
+$mail = $val['mail_address'];
+$ip = $val['ip_address']; 
+$c_name = $val['country_name']; 
+$jp_flg = (!strstr($c_name,'Japan'))?true:false;
 ?>
 
+<span style="<?php if($jp_flg) echo 'color:red;';?>">
+
+<?php echo $mail . $ip . $c_name ; ?>
+
+</span><br>
 <?php endforeach; ?>
 </div>
 </body>

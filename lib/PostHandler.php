@@ -1,21 +1,26 @@
 <?php
+#:include "MCrypt.php";
 class PostHandler {
-    private $_post = array();
-    private $_params = array();
-    
-    public function __construct($post) {
-	$this->_post = $post;
-	$this->sanitize($this->_post);
-	$this->_params = $this->parse($this->_post);
+    private $_post;
+    private $_params;
+
+    public function __construct() {
+	if(!is_null($this->_post)) {
+	    $this->sanitize($this->_post);
+	    $this->_params = $this->parse($this->_post);
+	}
+    }
+
+    public function setParams($params) {
+	$this->_post = $params;
+	$this->__construct();
     }
 
     private function sanitize() {
-	
 	if(empty($this->_post)) {
-	throw Exception("Input data is empty");
+	    trigger_error("Input data is empty");exit;
 	}
 	$this->_post = htmlspecialchars($this->_post,ENT_QUOTES,'UTF-8'); 
-	# $this->_post = mysql_real_escape_string($this->_post);
     }
 
     private function parse($post) {

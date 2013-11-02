@@ -83,9 +83,9 @@
 		    <p class="headline">Display Parsed List Below</p>
 		    <?php if(isset($data)): ?>
 		    <span><?php echo"total:". count($data) ;?></span><br>
-		    <?php foreach($data as $n => $v): $jp_flg = (!strstr($v['country_name'],'Japan')) ? true : false ; ?>
+		    <?php foreach($data as $n => $v): $jp_flg = (!strstr($v['country'],'Japan')) ? true : false ; ?>
 		    <span style="<?php if($jp_flg) echo 'color:red;';?>">
-			<?php echo $v['mail_address'] . $v['ip_address'] . $v['country_name'] ; ?>
+			<?php echo $v['mail'] . $v['ip'] . $v['country'] ; ?>
 		    </span><br>
 		    <?php endforeach; ?>
 		    <?php endif; ?>

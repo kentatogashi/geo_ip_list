@@ -1,5 +1,4 @@
 <?php
-#:include "MCrypt.php";
 class PostHandler {
     private $_post;
     private $_params;
@@ -16,6 +15,10 @@ class PostHandler {
 	$this->__construct();
     }
 
+    public function getParams() {
+	return $this->_params;
+    }
+
     private function sanitize() {
 	if(empty($this->_post)) {
 	    trigger_error("Input data is empty");exit;
@@ -25,28 +28,23 @@ class PostHandler {
 
     private function parse($post) {
 	$rows = explode("\n",$post);
-	$parsed_params = array();
-	foreach($rows as $key => $val) {
-	    if(strstr($val,'@')) {
-		$tmp = explode(':',$val);
-		$parsed_params[$key]['mail_address'] = $tmp[0];
-		$parsed_params[$key]['ip_address'] = $tmp[1];
-		$parsed_params[$key]['country_name'] = $this->searchCountryName($tmp[1]);
+	$data = array();
+	foreach($rows as $k => $v) {
+	    if(strstr($v,'@')) {
+		list($mail,$ip) = explode(':',$v);
+		$data[$k]['mail'] = $mail;
 	    } else {
-		$parsed_params[$key]['ip_address'] = $val;
-		$parsed_params[$key]['country_name'] = $this->searchCountryName($val);
+		$ip = $v;
 	    }
+		$data[$k]['ip'] = $ip;
+		$data[$k]['country'] = $this->searchCountry($ip);
 	}
-	return $parsed_params;
+	return $data;
     }
 
-    private function searchCountryName($ip_address) {
-	$country_name = geoip_country_name_by_name($ip_address);
-	if(empty($country_name)) $country_name = null;
-	return $country_name;
+    private function searchCountry($ip) {
+	$country = geoip_country_name_by_name($ip);
+	return $country;
     }
 
-    public function getParams() {
-	return $this->_params;
-    }
 }

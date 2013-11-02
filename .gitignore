@@ -1,3 +1,5 @@
 .htaccess
 .htpasswd
 task.txt
+*.swo
+*.swp

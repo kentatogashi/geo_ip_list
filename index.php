@@ -1,10 +1,10 @@
 <?php
 
+error_reporting(E_ALL & ~E_NOTICE);
+
 if(!function_exists('geoip_country_name_by_name')) {
     throw new Exception("You need geoip module.HINT:'yum install re2c geoip geoip-devel and pecl install geoip");
 }
-
-error_reporting(E_ALL & ~E_NOTICE);
 
 if(!defined('DS')) {
     define('DS',DIRECTORY_SEPARATOR);
@@ -22,7 +22,8 @@ if(!defined('WWW_ROOT')) {
     define('WWW_ROOT',ROOT . DS . 'static' . DS);
 }
 
-include LIB_PATH . "PostHandler.php";
+include LIB_PATH . "ClassLoader.php";
+
 $Post = new PostHandler();
 
 if(isset($_POST['ip_list'])) {
@@ -31,4 +32,5 @@ if(isset($_POST['ip_list'])) {
 }
 
 //call template/html file
+
 include WWW_ROOT . "index.php";

@@ -1,6 +1,7 @@
 <html>
     <head>
 	<title>Geo IP List</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<style>
 	    #wrapper {
 		width:100%;
@@ -76,7 +77,7 @@
 		    <input type="reset" value="Reset" onclick="document.params.reset()">
 		    </p>
 		    <form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>" name="params">
-			<textarea name="ip_list" value="<?php echo $_POST['ip_list'] ; ?>" style="width:300px;height:300px;" placeholder="123.456.789.0 or 123.456.789.0:hogehoge@gmail.com"></textarea>
+			<textarea name="ip_list" value="" style="width:300px;height:300px;" placeholder="123.456.789.0 or 123.456.789.0:hogehoge@gmail.com"></textarea>
 		    </form>
 		</div>
 		<div id="sub_content_right">

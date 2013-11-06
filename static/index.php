@@ -76,8 +76,8 @@
 		    <input type="submit" value="Parse" onclick="document.params.submit()">
 		    <input type="reset" value="Reset" onclick="document.params.reset()">
 		    </p>
-		    <form method="post" action="<?php echo $_SERVER["REQUEST_URI"]; ?>" name="params">
-			<textarea name="ip_list" value="" style="width:300px;height:300px;" placeholder="123.456.789.0 or 123.456.789.0:hogehoge@gmail.com"></textarea>
+		    <form method="post" action="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"],ENT_QUOTES, "UTF-8"); ?>" name="params">
+			<textarea name="ip_list" value="" style="width:300px;height:300px;" placeholder="192.168.0.0/16 or 192.168.0.0/16:hogehoge@example.com"></textarea>
 		    </form>
 		</div>
 		<div id="sub_content_right">
